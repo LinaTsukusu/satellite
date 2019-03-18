@@ -31,9 +31,11 @@ export class Satellite {
     const list = await fs.readdir(pluginPath, {withFileTypes: true})
     const plugins = await Promise.all(list.filter((v) => v.isFile() && path.extname(v.name) === '.js')
       .map(async (v) => await import(path.join(pluginPath, v.name)) as SatellitePlugin))
-    plugins.forEach((plugin) => {
+    plugins.forEach((plugin) => Satellite.registerPlugin(plugin))
+  }
 
-    })
+  private static registerPlugin(plugin: SatellitePlugin) {
+
   }
 
   public addComment(...comment: satellite.CommentData[]) {
