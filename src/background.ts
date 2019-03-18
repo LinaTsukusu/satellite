@@ -3,7 +3,6 @@ import {
   createProtocol,
   installVueDevtools,
 } from 'vue-cli-plugin-electron-builder/lib'
-import main from '@/main/main'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -48,7 +47,6 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
-    main()
     createWindow()
   }
 })

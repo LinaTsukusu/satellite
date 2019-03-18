@@ -32,3 +32,19 @@ yarn run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## EventList
+プラグインで使える
+
+- loaded
+  - プラグインがロードされたとき
+- tick
+  - 0.1秒に1回発火  
+- beforeAddComment
+  - コメントがリストに追加される前
+- afterAddComment
+  - コメントがリストに追加された後
+- beforeDeleteComment
+  - コメントが削除される前
+- afterDeleteComment
+  - コメントが削除されたとき
