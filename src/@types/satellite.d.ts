@@ -30,4 +30,17 @@ declare namespace satellite {
     updateComment(num: number, newComment: satellite.CommentData): boolean
   }
 
+  enum Events {
+    tick = 'tick',
+    loaded = 'loaded',
+    beforeAddComment = 'beforeAddComment',
+    afterAddComment = 'afterAddComment',
+    canceledAddComment = 'canceledAddComment',
+    beforeDeleteComment = 'beforeDeleteComment',
+    afterDeleteComment = 'afterDeleteComment',
+    canceledDeleteComment = 'canceledDeleteComment',
+    beforeUpdateComment = 'beforeUpdateComment',
+    afterUpdateComment = 'afterUpdateComment',
+    canceledUpdateComment = 'canceledUpdateComment',
+  }
 }
