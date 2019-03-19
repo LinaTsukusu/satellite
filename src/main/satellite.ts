@@ -24,6 +24,7 @@ export class Satellite implements satellite.Satellite {
         if (plugin.prototype[event]) {
           Satellite.event.on(event, plugin.prototype[event])
         }
+        plugin.loaded()
       }
     })
   }
