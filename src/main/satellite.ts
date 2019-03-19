@@ -26,16 +26,19 @@ export class Satellite {
     return Satellite.innerInstance
   }
 
-  public static async loadPlugin(plugin: SatellitePlugin) {
+  public static async loadPlugin() {
     const pluginPath = path.join(app.getAppPath(), 'plugins')
     const list = await fs.readdir(pluginPath, {withFileTypes: true})
     const plugins = await Promise.all(list.filter((v) => v.isFile() && path.extname(v.name) === '.js')
-      .map(async (v) => await import(path.join(pluginPath, v.name)) as SatellitePlugin))
-    plugins.forEach((plugin) => Satellite.registerPlugin(plugin))
+      .map(async (v) => <SatellitePlugin>(await import(path.join(pluginPath, v.name))).default))
+    plugins.forEach((plugin) => Satellite.registerPlugin((<Function>plugin)))
   }
 
-  private static registerPlugin(plugin: SatellitePlugin) {
-
+  private static registerPlugin(plugin: Function) {
+    Object.keys(plugin.prototype).filter((v) => {
+    }).forEach((event) => {
+      Satellite.event.on(event, plugin.prototype[event])
+    })
   }
 
   public addComment(...comment: satellite.CommentData[]) {
