@@ -3,6 +3,7 @@ import {
   createProtocol,
   installVueDevtools,
 } from 'vue-cli-plugin-electron-builder/lib'
+import {logger} from './lib/logger'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -60,7 +61,7 @@ app.on('ready', async () => {
     try {
       await installVueDevtools()
     } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
+      logger.error('Vue Devtools failed to install:', e.toString())
     }
   }
   createWindow()

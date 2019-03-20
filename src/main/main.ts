@@ -1,7 +1,8 @@
 import {Satellite} from '@/main/satellite'
+import {ipcMain} from 'electron'
 
-export default async () => {
-  await Satellite.loadPlugin()
-  const satellite = Satellite.instance
+const satellite = Satellite.instance
 
-}
+ipcMain.on('start', async (event: Electron.Event) => {
+  await satellite.loadPlugins()
+})

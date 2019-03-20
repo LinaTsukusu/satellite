@@ -1,3 +1,3 @@
-export default class Test implements satellite.SatellitePlugin {
+export default class Test implements SatellitePlugin {
 
 }
