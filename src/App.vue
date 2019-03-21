@@ -8,11 +8,10 @@
   import {Component, Vue} from 'vue-property-decorator'
   import {ipcRenderer} from 'electron'
 
-  @Component()
+  @Component
   export default class App extends Vue {
     private mounted() {
-      const result = ipcRenderer.sendSync('start')
-      console.log(result)
+      ipcRenderer.send('start')
     }
   }
 </script>

@@ -1,6 +1,6 @@
 import {EventEmitter} from 'events'
 import * as path from 'path'
-import {promises as fs} from 'fs'
+import * as fs from 'fs'
 import {app} from 'electron'
 
 import {Events} from '../lib/events'
@@ -8,6 +8,8 @@ import {getLogger} from 'log4js'
 
 
 export class Satellite {
+  public static readonly pluginPath = path.join(app.getAppPath(), 'plugins')
+
   public static get instance() {
     if (!Satellite.innerInstance) {
       Satellite.innerInstance = new Satellite()
@@ -26,6 +28,17 @@ export class Satellite {
 
   private constructor() {
     this.event = new EventEmitter()
+    this.event.on('tick', (satellite: this) => {
+      satellite.addComment({
+        time: new Date(),
+        thumbnailUrl: '',
+        userId: '1',
+        userName: '',
+        site: 'youtube',
+        comment: 'aaaa',
+        isFirst: true,
+      })
+    })
   }
 
   public get comments() {
@@ -33,10 +46,10 @@ export class Satellite {
   }
 
   public async loadPlugins() {
-    const pluginPath = path.join(app.getAppPath(), 'plugins')
-    const pluginFiles = await fs.readdir(pluginPath, {withFileTypes: true})
+    this.logger.info('loadPlugin')
+    const pluginFiles = fs.readdirSync(Satellite.pluginPath, {withFileTypes: true})
     const plugins = await Promise.all(pluginFiles.filter((v) => v.isFile() && path.extname(v.name) === '.js')
-      .map(async (v) => (await import(path.join(pluginPath, v.name))).default))
+      .map(async (v) => (await import(path.join(Satellite.pluginPath, v.name))).default))
     plugins.forEach((plugin) => {
       for (const event in Events) {
         if (plugin.prototype[event]) {
