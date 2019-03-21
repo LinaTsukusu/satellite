@@ -1,19 +1,24 @@
-<template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+<template lang="pug">
+  v-data-table()
 </template>
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
-  import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+  import {ipcRenderer} from 'electron'
 
-  @Component({
-    components: {
-      HelloWorld,
-    },
-  })
+
+  @Component()
   export default class Home extends Vue {
+    private comments: CommentData[] = []
+
+    private mounted() {
+      ipcRenderer.on('receiveComment', (event: Electron.Event, comments: CommentData[]) => {
+        this.comments = comments
+      })
+    }
   }
 </script>
+
+<style scoped lang="stylus">
+
+</style>

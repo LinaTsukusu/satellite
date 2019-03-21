@@ -1,12 +1,11 @@
 import {EventEmitter} from 'events'
 import * as path from 'path'
 import {promises as fs} from 'fs'
-import app = Electron.app
-import {Events} from '@/lib/events'
+import {app} from 'electron'
+
+import {Events} from '../lib/events'
 import {getLogger} from 'log4js'
 
-
-const logger = getLogger()
 
 export class Satellite {
   public static get instance() {
@@ -18,9 +17,10 @@ export class Satellite {
 
   private static innerInstance: Satellite | null = null
 
-  private event: EventEmitter = new EventEmitter()
-  private comments: CommentData[] = []
+  public readonly logger = getLogger()
 
+  private event: EventEmitter = new EventEmitter()
+  private commentList: CommentData[] = []
   private nextNum = 1
   private isCanceled = false
 
@@ -28,10 +28,14 @@ export class Satellite {
     this.event = new EventEmitter()
   }
 
+  public get comments() {
+    return this.commentList
+  }
+
   public async loadPlugins() {
     const pluginPath = path.join(app.getAppPath(), 'plugins')
-    const list = await fs.readdir(pluginPath, {withFileTypes: true})
-    const plugins = await Promise.all(list.filter((v) => v.isFile() && path.extname(v.name) === '.js')
+    const pluginFiles = await fs.readdir(pluginPath, {withFileTypes: true})
+    const plugins = await Promise.all(pluginFiles.filter((v) => v.isFile() && path.extname(v.name) === '.js')
       .map(async (v) => (await import(path.join(pluginPath, v.name))).default))
     plugins.forEach((plugin) => {
       for (const event in Events) {
@@ -50,7 +54,7 @@ export class Satellite {
       this.event.emit(Events.beforeAddComment, this, v)
       if (!this.isCanceled) {
         v.number = this.nextNum++
-        this.comments.push(v)
+        this.commentList.push(v)
         this.event.emit(Events.afterAddComment, this, v)
         ret = true
       } else {
@@ -67,10 +71,10 @@ export class Satellite {
 
   public deleteComment(num: number): boolean {
     const index = this.findComment(num)
-    const item = this.comments[index]
+    const item = this.commentList[index]
     this.event.emit(Events.beforeDeleteComment, this, item)
     if (!this.isCanceled) {
-      this.comments.splice(index, 1)
+      this.commentList.splice(index, 1)
       this.event.emit(Events.afterDeleteComment, this, item)
       return true
     } else {
@@ -82,10 +86,10 @@ export class Satellite {
 
   public updateComment(num: number, newComment: CommentData): boolean {
     const index = this.findComment(num)
-    const oldItem = this.comments[index]
+    const oldItem = this.commentList[index]
     this.event.emit(Events.beforeUpdateComment, this, oldItem, newComment)
     if (!this.isCanceled) {
-      this.comments[index] = newComment
+      this.commentList[index] = newComment
       this.event.emit(Events.afterUpdateComment, this, oldItem, newComment)
       return true
     } else {
@@ -96,7 +100,7 @@ export class Satellite {
   }
 
   private findComment(num: number): number {
-    return this.comments.findIndex((v) => v.number === num)
+    return this.commentList.findIndex((v) => v.number === num)
   }
 
 }

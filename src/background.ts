@@ -4,6 +4,7 @@ import {
   installVueDevtools,
 } from 'vue-cli-plugin-electron-builder/lib'
 import {logger} from './lib/logger'
+import {main} from './main/main'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -29,7 +30,7 @@ function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-
+  main()
   win.on('closed', () => {
     win = null
   })

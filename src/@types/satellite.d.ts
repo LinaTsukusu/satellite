@@ -1,5 +1,6 @@
 interface CommentData {
   number?: number
+  time: Date
   thumbnailUrl: string
   userId: string
   userName: string

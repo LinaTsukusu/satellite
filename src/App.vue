@@ -1,38 +1,18 @@
-<template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-          flat
-          href="https://github.com/vuetifyjs/vuetify/releases/latest"
-          target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+<template lang="pug">
+  v-app
+    v-content
+      router-view
 </template>
 
-<script>
-  import HelloWorld from './components/HelloWorld'
+<script lang="ts">
+  import {Component, Vue} from 'vue-property-decorator'
+  import {ipcRenderer} from 'electron'
 
-  export default {
-    name: 'App',
-    components: {
-      HelloWorld,
-    },
-    data() {
-      return {
-        //
-      }
-    },
+  @Component()
+  export default class App extends Vue {
+    private mounted() {
+      const result = ipcRenderer.sendSync('start')
+      console.log(result)
+    }
   }
 </script>
