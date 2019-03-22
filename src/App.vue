@@ -15,3 +15,8 @@
     }
   }
 </script>
+
+<style lang="stylus">
+  html
+    overflow-y hidden
+</style>

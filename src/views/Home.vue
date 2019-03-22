@@ -1,10 +1,9 @@
 <template lang="pug">
   .home
-    v-data-table(:headers="headers" :items="comments" hide-actions)
+    v-data-table#comments(:headers="headers" :items="comments" hide-actions)
       template(v-slot:items="props")
         td {{props.item.number}}
         td {{props.item.comment}}
-    #bottom
 
 </template>
 
@@ -29,16 +28,19 @@
     ]
 
     private mounted() {
-      window.addEventListener('scroll', () => {
-        // this.isScroll = false
+      const obj = document.getElementById('comments').children[0]
+
+      obj.addEventListener('wheel', (event) => {
+        console.log(event)
+        if (this.isScroll && event.wheelDelta > 0) {
+          this.isScroll = false
+        }
       })
       ipcRenderer.on('receiveComment', (event: Electron.Event, comments: CommentData[]) => {
         this.comments = comments
-        this.$nextTick(async () => {
-          if (this.isScroll) {
-            await this.$vuetify.goTo(Number.MAX_SAFE_INTEGER)
-          }
-        })
+        if (this.isScroll) {
+          obj.scrollTop = obj.scrollHeight
+        }
       })
 
       setInterval(() => {
@@ -48,6 +50,14 @@
   }
 </script>
 
-<style scoped lang="stylus">
+<style lang="stylus" scoped>
 
+</style>
+
+
+<style lang="stylus">
+  @import '~vuetify-stylus-fixed-table-header'
+
+  #comments
+    fixed-table-header(100vh)
 </style>

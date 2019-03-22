@@ -28,17 +28,22 @@ export class Satellite {
 
   private constructor() {
     this.event = new EventEmitter()
+    ////////////////////
     this.event.on('tick', (satellite: this) => {
-      satellite.addComment({
-        time: new Date(),
-        thumbnailUrl: '',
-        userId: '1',
-        userName: '',
-        site: 'youtube',
-        comment: 'aaaa',
-        isFirst: true,
-      })
+      const time = new Date()
+      if (time.getMilliseconds() % 1000 > 500) {
+        satellite.addComment({
+          time,
+          thumbnailUrl: '',
+          userId: '1',
+          userName: '',
+          site: 'youtube',
+          comment: 'aaaa',
+          isFirst: true,
+        })
+      }
     })
+    ////////////////////
   }
 
   public get comments() {
