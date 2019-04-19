@@ -1,3 +1,5 @@
-export default class Test implements SatellitePlugin {
+export default (satellite) => {
+  satellite.on('tick', () => {
 
+  })
 }
