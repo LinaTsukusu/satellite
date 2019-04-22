@@ -27,22 +27,6 @@ export class Satellite extends EventEmitter {
 
   private constructor() {
     super()
-    ////////////////////
-    this.on('tick', (satellite: this) => {
-      const time = new Date()
-      if (time.getMilliseconds() % 1000 > 500) {
-        satellite.addComment({
-          time,
-          thumbnailUrl: '',
-          userId: '1',
-          userName: '',
-          site: 'youtube',
-          comment: 'aaaa',
-          isFirst: true,
-        })
-      }
-    })
-    ////////////////////
   }
 
   public get comments() {
@@ -55,14 +39,6 @@ export class Satellite extends EventEmitter {
     const pluginFiles = fs.readdirSync(Satellite.pluginPath, {withFileTypes: true})
     const plugins = await Promise.all(pluginFiles.filter((v) => v.isFile() && path.extname(v.name) === '.js')
       .map(async (v) => (await import(path.join(Satellite.pluginPath, v.name))).default as (satellite: Satellite) => string))
-    // plugins.forEach((plugin) => {
-    //   for (const event in Events) {
-    //     if (plugin.prototype[event]) {
-    //       self.on(event, plugin.prototype[event])
-    //     }
-    //   }
-    //   plugin.loaded(this)
-    // })
     plugins.forEach((plugin) => {
       const name = plugin(self)
       self.logger.info(`Loaded plugin. [${name}]`)
@@ -88,7 +64,7 @@ export class Satellite extends EventEmitter {
     return ret
   }
 
-  public cancelAddComment(): boolean {
+  public cancel(): boolean {
     return this.isCanceled = true
   }
 
