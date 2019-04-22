@@ -11,6 +11,7 @@
   @Component
   export default class App extends Vue {
     private mounted() {
+      this.$router.push('/')
       ipcRenderer.send('start')
     }
   }

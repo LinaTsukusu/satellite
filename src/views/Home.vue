@@ -11,7 +11,7 @@
   import {Component, Vue} from 'vue-property-decorator'
   import {ipcRenderer} from 'electron'
 
-  type header = { text: keyof CommentData, value: keyof CommentData }
+  type header = { text: keyof CommentData, value: keyof CommentData, sortable: boolean }
 
   @Component
   export default class Home extends Vue {
@@ -20,17 +20,17 @@
 
     private headers: header[] = [
       {
-        text: 'number', value: 'number', sortable: false
+        text: 'number', value: 'number', sortable: false,
       },
       {
-        text: 'comment', value: 'comment', sortable: false
+        text: 'comment', value: 'comment', sortable: false,
       },
     ]
 
     private mounted() {
-      const obj = document.getElementById('comments').children[0]
+      const obj = document.getElementById('comments')!.children[0]
 
-      obj.addEventListener('wheel', (event) => {
+      obj.addEventListener('wheel', (event: any) => {
         console.log(event)
         if (this.isScroll && event.wheelDelta > 0) {
           this.isScroll = false

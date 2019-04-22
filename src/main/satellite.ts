@@ -8,7 +8,7 @@ import {getLogger} from 'log4js'
 
 
 export class Satellite extends EventEmitter {
-  public static readonly pluginPath = path.join(app.getAppPath(), 'plugins')
+  public static readonly pluginPath = path.join(app.getPath('userData'), 'plugins')
 
   public static get instance() {
     if (!Satellite.innerInstance) {
@@ -36,13 +36,13 @@ export class Satellite extends EventEmitter {
   public static async loadPlugins() {
     const self = Satellite.instance
     self.logger.info('loadPlugin')
-    const pluginFiles = fs.readdirSync(Satellite.pluginPath, {withFileTypes: true})
-    const plugins = await Promise.all(pluginFiles.filter((v) => v.isFile() && path.extname(v.name) === '.js')
-      .map(async (v) => (await import(path.join(Satellite.pluginPath, v.name))).default as (satellite: Satellite) => string))
-    plugins.forEach((plugin) => {
-      const name = plugin(self)
-      self.logger.info(`Loaded plugin. [${name}]`)
-    })
+
+    fs.readdirSync(Satellite.pluginPath)
+      .map((v) => require(path.join(Satellite.pluginPath, v)).default as (satellite: Satellite) => string)
+      .forEach((plugin) => {
+        const name = plugin(self)
+        self.logger.info(`Loaded plugin. [${name}]`)
+      })
     self.emit(Events.loaded)
     setInterval(() => self.emit(Events.tick, this), 100)
   }
