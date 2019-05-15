@@ -1,7 +1,7 @@
 <template lang="pug">
   .home
     v-data-table#comments(:headers="headers" :items="comments" hide-actions)
-      template(v-slot:items="props")
+      template(#items="props")
         td {{props.item.number}}
         td {{props.item.comment}}
 
