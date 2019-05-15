@@ -38,13 +38,17 @@ export class Satellite extends EventEmitter {
     self.logger.info('loadPlugin')
 
     fs.readdirSync(Satellite.pluginPath)
-      .map((v) => require(path.join(Satellite.pluginPath, v)).default as (satellite: Satellite) => string)
-      .forEach((plugin) => {
-        const name = plugin(self)
-        self.logger.info(`Loaded plugin. [${name}]`)
+      .forEach((v) => {
+        try {
+          const plugin = __non_webpack_require__(path.join(Satellite.pluginPath, v)).default as (satellite: Satellite) => void
+          plugin(self)
+          self.logger.info(`Loaded plugin. [${v}]`)
+        } catch (e) {
+          self.logger.error(`PluginLoadError[${v}]: ${e.message}`)
+        }
       })
     self.emit(Events.loaded)
-    setInterval(() => self.emit(Events.tick, this), 100)
+    setInterval(() => self.emit(Events.tick), 100)
   }
 
   public addComment(...comment: CommentData[]): boolean {
