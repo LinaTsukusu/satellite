@@ -10,14 +10,7 @@ import {getLogger} from 'log4js'
 export class Satellite extends EventEmitter {
   public static readonly pluginPath = path.join(app.getPath('userData'), 'plugins')
 
-  public static get instance() {
-    if (!Satellite.innerInstance) {
-      Satellite.innerInstance = new Satellite()
-    }
-    return Satellite.innerInstance
-  }
-
-  private static innerInstance: Satellite | null = null
+  private static readonly instance = new Satellite()
 
   public readonly logger = getLogger()
 
