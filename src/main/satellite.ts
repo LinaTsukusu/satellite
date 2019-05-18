@@ -10,21 +10,7 @@ import {getLogger} from 'log4js'
 export class Satellite extends EventEmitter {
   public static readonly pluginPath = path.join(app.getPath('userData'), 'plugins')
 
-  private static readonly instance = new Satellite()
-
-  public readonly logger = getLogger()
-
-  private commentList: CommentData[] = []
-  private nextNum = 1
-  private isCanceled = false
-
-  private constructor() {
-    super()
-  }
-
-  public get comments() {
-    return this.commentList
-  }
+  public static readonly instance = new Satellite()
 
   public static async loadPlugins() {
     const self = Satellite.instance
@@ -42,6 +28,21 @@ export class Satellite extends EventEmitter {
       })
     self.emit(Events.loaded)
     setInterval(() => self.emit(Events.tick), 100)
+  }
+
+
+  public readonly logger = getLogger('Satellite')
+
+  private commentList: CommentData[] = []
+  private nextNum = 1
+  private isCanceled = false
+
+  private constructor() {
+    super()
+  }
+
+  public get comments() {
+    return this.commentList
   }
 
   public addComment(...comment: CommentData[]): boolean {
@@ -72,12 +73,11 @@ export class Satellite extends EventEmitter {
     if (!this.isCanceled) {
       this.commentList.splice(index, 1)
       this.emit(Events.afterDeleteComment, this, item)
-      return true
     } else {
       this.emit(Events.canceledDeleteComment, this, item)
       this.isCanceled = false
-      return false
     }
+    return !this.isCanceled
   }
 
   public updateComment(num: number, newComment: CommentData): boolean {

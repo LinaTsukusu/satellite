@@ -15,10 +15,8 @@
 
   @Component
   export default class Home extends Vue {
-    private comments: CommentData[] = []
-    private isScroll = true
-
-    private headers: header[] = [
+    public comments: CommentData[] = []
+    public headers: header[] = [
       {
         text: 'number', value: 'number', sortable: false,
       },
@@ -27,16 +25,20 @@
       },
     ]
 
-    private mounted() {
+    private isScroll = true
+
+    public mounted() {
       const obj = document.getElementById('comments')!.children[0]
 
-      obj.addEventListener('wheel', (event: any) => {
-        console.log(event)
-        if (this.isScroll && event.wheelDelta > 0) {
+      obj.addEventListener('wheel', (event: Event) => {
+        const target = (event.target as Element).parentElement!
+        if (this.isScroll && (event as WheelEvent).deltaY > 0) {
           this.isScroll = false
+        } else if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+          console.log('scrolled')
         }
       })
-      ipcRenderer.on('receiveComment', (event: Electron.Event, comments: CommentData[]) => {
+      ipcRenderer.on('receiveComment', (_: Electron.Event, comments: CommentData[]) => {
         this.comments = comments
         if (this.isScroll) {
           obj.scrollTop = obj.scrollHeight

@@ -9,7 +9,7 @@ export const main = () => {
   if (!fs.existsSync(Satellite.pluginPath)) {
     fs.promises.mkdir(Satellite.pluginPath).catch((e) => satellite.logger.error(e))
   }
-  ipcMain.on('start', async (event: Event) => {
+  ipcMain.on('start', async (_: Event) => {
     satellite.logger.info('main')
     await Satellite.loadPlugins().catch((e) => satellite.logger.error(e))
   })
