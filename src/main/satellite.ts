@@ -2,9 +2,9 @@ import {EventEmitter} from 'events'
 import * as path from 'path'
 import * as fs from 'fs'
 import {app} from 'electron'
-
-import {Events} from '../lib/events'
 import {getLogger} from 'log4js'
+import {Events} from '@/lib/events'
+import {PluginDriver} from '@/main/plugin'
 
 
 export class Satellite extends EventEmitter {
@@ -19,8 +19,8 @@ export class Satellite extends EventEmitter {
     fs.readdirSync(Satellite.pluginPath)
       .forEach((v) => {
         try {
-          const plugin = __non_webpack_require__(path.join(Satellite.pluginPath, v)).default as (satellite: Satellite) => void
-          plugin(self)
+          const plugin = __non_webpack_require__(path.join(Satellite.pluginPath, v)).default as (satellite: PluginDriver) => void
+          plugin(new PluginDriver(v))
           self.logger.info(`Loaded plugin. [${v}]`)
         } catch (e) {
           self.logger.error(`PluginLoadError[${v}]: ${e.message}`)
@@ -33,9 +33,9 @@ export class Satellite extends EventEmitter {
 
   public readonly logger = getLogger('Satellite')
 
-  private commentList: CommentData[] = []
-  private nextNum = 1
-  private isCanceled = false
+  public commentList: CommentData[] = []
+  public nextNum = 1
+  public isCanceled = false
 
   private constructor() {
     super()
