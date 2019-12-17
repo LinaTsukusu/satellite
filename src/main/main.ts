@@ -9,12 +9,12 @@ export const main = () => {
   if (!fs.existsSync(Satellite.pluginPath)) {
     fs.promises.mkdir(Satellite.pluginPath).catch((e) => satellite.logger.error(e))
   }
-  ipcMain.on('start', async (_: Event) => {
+  ipcMain.on('start', async () => {
     satellite.logger.info('main')
     await Satellite.loadPlugins().catch((e) => satellite.logger.error(e))
   })
 
-  ipcMain.on('fetchComment', (event: Event) => {
+  ipcMain.on('fetchComment', (event) => {
     event.sender.send('receiveComment', satellite.comments)
   })
 

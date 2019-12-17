@@ -10575,11 +10575,6 @@ vuetify-loader@^1.3.0:
   dependencies:
     loader-utils "^1.2.0"
 
-vuetify-stylus-fixed-table-header@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/vuetify-stylus-fixed-table-header/-/vuetify-stylus-fixed-table-header-1.1.1.tgz#6b1dbdc85ce9effe892ce1ec104fdd561102197b"
-  integrity sha512-pkgZVh9lBHE2MomfBMbtiw6pbN8ONMgAqi7RWBiVg/kcFm02VoCp2xgQejVcMZ+3boXdHXRNLBZmGKWcU568pA==
-
 vuetify@^2.1.0:
   version "2.1.14"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.1.14.tgz#f53f5a9c8115c462eda47433d9a0136686802dd5"
