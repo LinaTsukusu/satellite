@@ -1,9 +1,9 @@
-const {testWithSpectron} = require('vue-cli-plugin-electron-builder')
+const { testWithSpectron } = require('vue-cli-plugin-electron-builder')
 jest.setTimeout(50000)
 
 test('Window Loads Properly', async () => {
   // Wait for dev server to start
-  const {app, stopServe} = await testWithSpectron()
+  const { app, stopServe } = await testWithSpectron()
   const win = app.browserWindow
   const client = app.client
 
@@ -14,7 +14,7 @@ test('Window Loads Properly', async () => {
   // Window is visible
   expect(await win.isVisible()).toBe(true)
   // Size is correct
-  const {width, height} = await win.getBounds()
+  const { width, height } = await win.getBounds()
   expect(width).toBeGreaterThan(0)
   expect(height).toBeGreaterThan(0)
   // App is loaded properly

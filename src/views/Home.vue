@@ -58,8 +58,4 @@
 
 
 <style lang="stylus">
-  @import '~vuetify-stylus-fixed-table-header'
-
-  #comments
-    fixed-table-header(100vh)
 </style>

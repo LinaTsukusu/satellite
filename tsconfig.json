@@ -1,12 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es5",
     "module": "esnext",
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -17,8 +13,7 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest",
-      "vuetify"
+      "jest"
     ],
     "paths": {
       "@/*": [
