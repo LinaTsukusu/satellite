@@ -1,6 +1,6 @@
 <template lang="pug">
   .home
-    v-data-table#comments(:headers="headers" :items="comments" hide-actions)
+    v-data-table#comments(:headers="headers" :items="comments" fixed-header=true hide-default-footer=true)
       template(#items="props")
         td {{props.item.number}}
         td {{props.item.comment}}
