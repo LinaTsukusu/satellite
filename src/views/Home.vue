@@ -1,6 +1,12 @@
 <template lang="pug">
   .home
-    v-data-table#comments(:headers="headers" :items="comments" fixed-header=true hide-default-footer=true)
+    v-data-table#comments(
+      :headers="headers"
+      :items="comments"
+      height="99vh"
+      fixed-header
+      hide-default-footer
+      disable-pagination)
       template(#items="props")
         td {{props.item.number}}
         td {{props.item.comment}}
@@ -38,10 +44,11 @@
           console.log('scrolled')
         }
       })
+
       ipcRenderer.on('receiveComment', (_: Electron.Event, comments: CommentData[]) => {
         this.comments = comments
         if (this.isScroll) {
-          obj.scrollTop = obj.scrollHeight
+
         }
       })
 
@@ -54,8 +61,4 @@
 
 <style lang="stylus" scoped>
 
-</style>
-
-
-<style lang="stylus">
 </style>
