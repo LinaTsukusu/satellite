@@ -47,9 +47,9 @@
 
       ipcRenderer.on('receiveComment', (_: Electron.Event, comments: CommentData[]) => {
         this.comments = comments
-        if (this.isScroll) {
-
-        }
+        // if (this.isScroll) {
+        //
+        // }
       })
 
       setInterval(() => {
