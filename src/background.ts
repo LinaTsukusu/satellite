@@ -1,7 +1,7 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import {
   createProtocol,
-  installVueDevtools
+  /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib'
 import {main} from '@/main/main'
 const isDevelopment = process.env.NODE_ENV !== 'production'
