@@ -17,7 +17,11 @@
   import {Component, Vue} from 'vue-property-decorator'
   import {ipcRenderer} from 'electron'
 
-  type header = { text: keyof CommentData, value: keyof CommentData, sortable: boolean }
+  type header = {
+    text: keyof CommentData,
+    value: keyof CommentData,
+    sortable: boolean
+  }
 
   @Component
   export default class Home extends Vue {
