@@ -29,7 +29,7 @@ function createWindow () {
     win.loadURL('app://./index.html')
   }
 
-  main()
+  main(win)
 
   win.on('closed', () => {
     win = null

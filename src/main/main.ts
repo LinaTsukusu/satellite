@@ -1,11 +1,11 @@
-import {ipcMain, Event} from 'electron'
+import {ipcMain, Event, BrowserWindow} from 'electron'
 import {Satellite} from './satellite'
 import * as fs from 'fs'
 
 
 const satellite = Satellite.instance
 
-export const main = () => {
+export const main = (win: BrowserWindow) => {
   if (!fs.existsSync(Satellite.pluginPath)) {
     fs.promises.mkdir(Satellite.pluginPath).catch((e) => satellite.logger.error(e))
   }
