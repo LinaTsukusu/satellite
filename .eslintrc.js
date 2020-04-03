@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     'eslint:recommended',
     '@vue/typescript/recommended'
@@ -14,8 +14,6 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "no-unexpected-multiline": "error",
-    "semi-style": ["error", "first"],
-    "no-extra-semi": "error"
+    semi: [2, "never"],
   }
 }

@@ -11,7 +11,7 @@ export class PluginDriver {
 
   constructor(name: string) {
     this.name = name
-    this.logger = getLogger()
+    this.logger = getLogger(name)
   }
 
   public on(event: Events, listener: (...args: any[]) => void) {

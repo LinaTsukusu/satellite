@@ -1,29 +1,34 @@
 <template lang="pug">
   .home
-    v-data-table#comments(
-      :headers="headers"
-      :items="comments"
-      height="99vh"
-      fixed-header
-      hide-default-footer
-      disable-pagination)
-      template(#items="props")
-        td {{props.item.number}}
-        td {{props.item.comment}}
+    //-
+      v-data-table#comments(
+        :headers="headers"
+        :items="comments"
+        height="99vh"
+        fixed-header
+        hide-default-footer
+        disable-pagination)
+        template(#items="props")
+          td {{props.item.number}}
+          td {{props.item.comment}}
+    comment-table
+
 
 </template>
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator'
   import {ipcRenderer} from 'electron'
+  import CommentTable from '@/components/CommentTable.vue'
 
   type header = {
-    text: keyof CommentData,
-    value: keyof CommentData,
-    sortable: boolean
+    text: keyof CommentData;
+    value: keyof CommentData;
+    sortable: boolean;
   }
-
-  @Component
+  @Component({
+    components: {CommentTable},
+  })
   export default class Home extends Vue {
     public comments: CommentData[] = []
     public headers: header[] = [
@@ -38,27 +43,28 @@
     private isScroll = true
 
     public mounted() {
-      const obj = document.getElementById('comments')!.children[0]
+      // const obj = document.getElementById('comments')!.children[0]
+      //
+      // obj.addEventListener('wheel', (event: Event) => {
+      //   const target = (event.target as Element).parentElement!
+      //   if (this.isScroll && (event as WheelEvent).deltaY > 0) {
+      //     // this.isScroll = false
+      //   } else if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+      //     console.log('scrolled')
+      //   }
+      // })
 
-      obj.addEventListener('wheel', (event: Event) => {
-        const target = (event.target as Element).parentElement!
-        if (this.isScroll && (event as WheelEvent).deltaY > 0) {
-          this.isScroll = false
-        } else if (target.scrollHeight - target.scrollTop === target.clientHeight) {
-          console.log('scrolled')
-        }
-      })
-
-      ipcRenderer.on('receiveComment', (_: Electron.Event, comments: CommentData[]) => {
-        this.comments = comments
-        // if (this.isScroll) {
-        //
-        // }
-      })
-
-      setInterval(() => {
-        ipcRenderer.send('fetchComment')
-      }, 100)
+      // ipcRenderer.on('receiveComment', (_: Electron.Event, comments: CommentData[]) => {
+      //   this.comments = comments
+      //   if (this.isScroll) {
+      //     const table = document.getElementById('comments')!
+      //     table.scrollTop = table.scrollHeight
+      //   }
+      // })
+      //
+      // setInterval(() => {
+      //   ipcRenderer.send('fetchComment')
+      // }, 100)
     }
   }
 </script>

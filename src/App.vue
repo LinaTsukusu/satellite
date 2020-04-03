@@ -20,4 +20,6 @@
 <style lang="stylus">
   html
     overflow-y hidden
+  html::-webkit-scrollbar
+    display none
 </style>
